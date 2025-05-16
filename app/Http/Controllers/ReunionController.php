@@ -62,4 +62,24 @@ class ReunionController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+{
+    $query = Reunion::query();
+
+    if ($request->has('user_id') && !empty($request->user_id)) {
+        $query->where('user_id', $request->user_id);
+    }
+
+    if ($request->has('titre') && !empty($request->titre)) {
+        $query->where('titre', 'like', '%' . $request->titre . '%');
+    }
+
+    $reunions = $query->paginate(10)->appends($request->query());
+
+    return response()->json([
+        'reunions' => view('users.reunions.reunion_partial', compact('reunions'))->render()
+    ]);
 }
+}
+
