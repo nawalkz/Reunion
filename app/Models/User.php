@@ -42,4 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function participations()
+{
+    return $this->belongsToMany(Reunion::class, 'participants')
+                ->withPivot('status')
+                ->withTimestamps();
+}
+
 }

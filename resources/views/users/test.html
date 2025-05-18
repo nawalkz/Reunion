@@ -1,0 +1,139 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Reunion;
+use App\Models\Notification;
+use Illuminate\Http\Request;
+
+class ReunionController extends Controller
+{
+    // Create reunion
+    public function store(Request $request)
+    {
+        $request->validate([
+            'titre' => 'required|string|max:255',
+            'date' => 'required|date',
+            'salle_id' => 'required|exists:salles,id',
+            'participants' => 'required|array',
+            'participants.*' => 'exists:users,id',
+        ]);
+
+        $reunion = Reunion::create([
+            'titre' => $request->titre,
+            'date' => $request->date,
+            'salle_id' => $request->salle_id,
+        ]);
+
+        $reunion->participants()->attach($request->participants);
+
+        // Notification message
+        $message = "La réunion '{$reunion->titre}' a été créée pour le " . $reunion->date->format('d/m/Y H:i');
+
+        $this->sendNotifications($reunion, $message);
+
+        return redirect()->route('reunions.index')->with('success', 'Réunion créée et notifications envoyées.');
+    }
+
+    // Update reunion
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'titre' => 'required|string|max:255',
+            'date' => 'required|date',
+            'salle_id' => 'required|exists:salles,id',
+            'participants' => 'required|array',
+            'participants.*' => 'exists:users,id',
+        ]);
+
+        $reunion = Reunion::findOrFail($id);
+
+        $reunion->update([
+            'titre' => $request->titre,
+            'date' => $request->date,
+            'salle_id' => $request->salle_id,
+        ]);
+
+        $reunion->participants()->sync($request->participants);
+
+        $message = "La réunion '{$reunion->titre}' a été modifiée. Nouvelle date: " . $reunion->date->format('d/m/Y H:i');
+
+        $this->sendNotifications($reunion, $message);
+
+        return redirect()->route('reunions.index')->with('success', 'Réunion mise à jour et notifications envoyées.');
+    }
+
+    // Delete reunion
+    public function destroy($id)
+    {
+        $reunion = Reunion::findOrFail($id);
+
+        $message = "La réunion '{$reunion->titre}' prévue le " . $reunion->date->format('d/m/Y H:i') . " a été annulée.";
+
+        $this->sendNotifications($reunion, $message);
+
+        $reunion->participants()->detach();
+
+        $reunion->delete();
+
+        return redirect()->route('reunions.index')->with('success', 'Réunion supprimée et notifications envoyées.');
+    }
+
+    // Fonction d'envoi des notifications
+    private function sendNotifications(Reunion $reunion, string $message)
+    {
+        foreach ($reunion->participants as $participant) {
+            Notification::create([
+                'user_id' => $participant->id,
+                'reunion_id' => $reunion->id,
+                'message' => $message,
+                'lu' => 0,
+            ]);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@php
+    $unreadCount = Auth::user()->notifications()->where('lu', 0)->count();
+@endphp
+
+<li class="nav-item">
+    <a class="nav-link position-relative" href="{{ route('notifications.index') }}">
+        <i class="bi bi-bell"></i> {{-- Bootstrap bell icon --}}
+        @if($unreadCount > 0)
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ $unreadCount }}
+                <span class="visually-hidden">unread notifications</span>
+            </span>
+        @endif
+    </a>
+</li>

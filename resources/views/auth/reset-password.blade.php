@@ -1,39 +1,61 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Réinitialiser le mot de passe</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body>
+    <div class="wrapper">
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+            <!-- Password Reset Token -->
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <!-- Email Address -->
+            <div class="input-field">
+                <label for="email">
+                    <span class="first-letter">Email</span>
+                    <span class="second-letter">*</span>
+                </label>
+                <input id="email" class="input-text" type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus autocomplete="username">
+                @error('email')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <!-- Password -->
+            <div class="input-field">
+                <label for="password">
+                    <span class="first-letter">Mot de passe</span>
+                    <span class="second-letter">*</span>
+                </label>
+                <input id="password" class="input-text" type="password" name="password" required autocomplete="new-password">
+                @error('password')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <!-- Confirm Password -->
+            <div class="input-field">
+                <label for="password_confirmation">
+                    <span class="first-letter">Confirmer mot de passe</span>
+                    <span class="second-letter">*</span>
+                </label>
+                <input id="password_confirmation" class="input-text" type="password" name="password_confirmation" required autocomplete="new-password">
+                @error('password_confirmation')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Submit -->
+            <div class="forget">
+                <button type="submit" class="register">
+                    {{ __('Reset Password') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
