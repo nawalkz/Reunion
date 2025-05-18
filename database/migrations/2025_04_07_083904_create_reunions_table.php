@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('titre');
             $table->date('date');
             $table->string('lieu');
-            $table->string('created_by');
+            $table->string('create_by');
+            $table->boolean ('importance');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('salle_id');
+            $table->foreign('salle_id')->references('id')->on('salles');
             $table->timestamps();
-          
         });
     }
 
