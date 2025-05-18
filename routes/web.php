@@ -6,6 +6,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReunionController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ParticipantController;
+
+
+use App\Http\Controllers\SalleController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

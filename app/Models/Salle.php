@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Salle extends Model
 {
     use HasFactory;
+
+
+    protected $guarded =['id'];
+       public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reunion()
+    {
+        return $this->belongsTo(Reunion::class);
+    }
 }

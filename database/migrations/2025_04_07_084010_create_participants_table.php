@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('participants', function (Blueprint $table) {
+               Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->date('invited_at');
-            $table->unsignedBigInteger('reunion_id');
-            $table->foreign('reunion_id')->references('id')->on('reunions');
-            $table->timestamps();
+             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+             $table->foreignId('reunion_id')->constrained()->onDelete('cascade');
+            $table->enum('status', ['pending', 'accepted', 'refused', 'attended'])->default('pending');
+             $table->timestamps();
         });
     }
 
