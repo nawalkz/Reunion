@@ -10,13 +10,13 @@ class SalleController extends Controller
     public function index()
     {
         $salles = Salle::all();
-        return view('salles.index', compact('salles'));
+        return view('admin.salles.index', compact('salles'));
     }
 
     // Afficher le formulaire de création
     public function create()
     {
-        return view('salles.create');
+        return view('admin.salles.create');
     }
 
     // Enregistrer une nouvelle salle
@@ -42,7 +42,7 @@ class SalleController extends Controller
     // Formulaire d'édition
     public function edit(Salle $salle)
     {
-        return view('salles.edit', compact('salle'));
+        return view('admin.salles.edit', compact('salle'));
     }
 
     // Mise à jour

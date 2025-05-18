@@ -11,7 +11,7 @@ class ParticipantController extends Controller
     public function index()
     {
         $participants = Participant::with(['user', 'reunion'])->get();
-        return view('participants.index', compact('participants'));
+        return view('admin.participants.index', compact('participants'));
     }
 
    public function create($reunion_id)
@@ -21,7 +21,7 @@ class ParticipantController extends Controller
         // جيب كل المستخدمين لعرضهم في القائمة المنسدلة
         $users = User::all();
         // مرر $reunion و $users إلى الواجهة
-        return view('participants.create', compact('reunion', 'users'));
+        return view('admin.participants.create', compact('reunion', 'users'));
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class ParticipantController extends Controller
     public function edit(Participant $participant)
     {
         $users = User::all();
-        return view('participants.edit', compact('participant', 'users'));
+        return view('admin.participants.edit', compact('participant', 'users'));
     }
 
     public function update(Request $request, Participant $participant)
