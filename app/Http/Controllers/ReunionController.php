@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Reunion;
+use App\Models\Salle;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\Log;
 
 class ReunionController extends Controller
 {
@@ -102,7 +104,7 @@ class ReunionController extends Controller
         $endOfWeek = Carbon::now()->endOfWeek();     // Dimanche
 
         // Obtenir les réunions où l'utilisateur est participant, durant cette semaine
-        $reunions = $user->participations()
+        $reunions = $user->reunions()
             ->whereBetween('date', [$startOfWeek, $endOfWeek])
             ->with('salle') // Charger la relation salle
             ->orderBy('date')
@@ -122,7 +124,7 @@ class ReunionController extends Controller
         $endOfNextWeek = Carbon::now()->addWeek()->endOfWeek();     // Dimanche prochain
 
         // Récupérer les réunions de la semaine prochaine où l'utilisateur est participant
-        $reunions = $user->participations()
+        $reunions = $user->reunions()
             ->whereBetween('date', [$startOfNextWeek, $endOfNextWeek])
             ->with('salle')
             ->orderBy('date')
@@ -130,15 +132,12 @@ class ReunionController extends Controller
 
         return view('users.reunions.semaine_prochaine', compact('reunions'));
     }
-
-
-
 public function reunionsImportantes()
 {
     $user = auth()->user();
 
     // Récupérer les réunions importantes (importance = 1)
-    $reunions = $user->participations()
+    $reunions = $user->reunions()
         ->where('importance', 1)
         ->with('salle')
         ->orderBy('date')

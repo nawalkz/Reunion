@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::middleware(['auth', 'isadmin'])->group(function () {
     Route::resource('reunions', ReunionController::class);
     Route::resource('salles', SalleController::class);
     Route::resource('notifications', NotificationController::class);
