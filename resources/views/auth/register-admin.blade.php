@@ -5,7 +5,7 @@
     <title>Admin Register</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="body">
     <div class="wrapper">
         <form method="POST" action="{{ route('register.admin') }}" enctype="multipart/form-data">
             @csrf
@@ -37,7 +37,7 @@
 <br>
             <!-- Submit -->
             <div class="-forget">
-                <button type="submit" class="-register">
+                <button type="submit" class="register">
                     Enregistrer Admin
                 </button>
             </div>

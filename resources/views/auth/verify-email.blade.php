@@ -5,7 +5,7 @@
     <title>Vérification Email</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="body">
     <div class="wrapper">
 
         <!-- Message principal -->
