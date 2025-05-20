@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('admin.layout.app')
 @section('content')
 <div class="container mt-5">
     <h1>Ajouter un participant à {{ $reunion->titre }}</h1>

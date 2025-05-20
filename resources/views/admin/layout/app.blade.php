@@ -9,10 +9,10 @@
     <div class="app-wrapper">
       <!--begin::Header-->
 
-      @include('layout.navbar')
+      @include('admin.layout.navbar')
       <!--end::Header-->
       <!--begin::Sidebar-->
-      @include('layout.sidebar')
+      @include('admin.layout.sidebar')
       <!--end::Sidebar-->
       <!--begin::App Main-->
       <main class="app-main">
@@ -27,12 +27,12 @@
       </main>
 
       {{-- </footer> --}}
-      @include('layout.footer')
+      @include('admin.layout.footer')
       <!--end::Footer-->
     </div>
     <!--end::App Wrapper-->
     <!--begin::Script-->
-    @include('layout.script')
+    @include('admin.layout.script')
     <!--end::Script-->
   </body>
   <!--end::Body-->

@@ -17,7 +17,7 @@ class ReunionController extends Controller
     public function index()
     {
         $reunions = Reunion::with(['user', 'salle'])->latest()->get();
-        return view('reunions.index', compact('reunions'));
+        return view('admin.reunions.index', compact('reunions'));
     }
 
     // Afficher le formulaire de création
@@ -25,7 +25,7 @@ class ReunionController extends Controller
     {
         $users = User::all();
         $salles = Salle::all();
-        return view('reunions.create', compact('users', 'salles'));
+        return view('admin.reunions.create', compact('users', 'salles'));
     }
 
     // Enregistrer une nouvelle réunion
@@ -62,7 +62,7 @@ class ReunionController extends Controller
     {
         $users = User::all();
         $salles = Salle::all();
-        return view('reunions.edit', compact('reunion', 'users', 'salles'));
+        return view('admin.reunions.edit', compact('reunion', 'users', 'salles'));
     }
 
     // Mettre à jour une réunion
