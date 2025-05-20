@@ -36,26 +36,26 @@
             <ul class="nav nav-treeview">
                
                 <li class="nav-item">
-                    <a href="{{ route('reunions.index') }}" class="nav-link {{ request()->routeIs('reunions.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.reunions.index') }}" class="nav-link {{ request()->routeIs('reunions.*') ? 'active' : '' }}">
                         <i class="bi bi-people-fill"></i>
                         <p>Reunions</p>
                     </a>
                 </li>
                   <li class="nav-item">
-                <a href="{{ route('participants.index', App\Models\Reunion::first()->id ?? 0) }}" class="nav-link {{ request()->routeIs('participants.index') ? 'active' : '' }}"> 
+                <a href="{{ route('admin.participants.index', App\Models\Reunion::first()->id ?? 0) }}" class="nav-link {{ request()->routeIs('participants.*') ? 'active' : '' }}"> 
                     <i class="bi bi-people-fill"></i>
 
                         <p>Participants</p>
                     </a>
                 </li>
                   <li class="nav-item">
-                    <a href="{{ route('notifications.index') }}" class="nav-link {{ request()->routeIs('notifications.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.notifications.index') }}" class="nav-link {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
                         <i class="bi bi-bell"></i>
                         <p>Notifications</p>
                     </a>
                 </li>
                   <li class="nav-item">
-                    <a href="{{ route('salles.index') }}" class="nav-link {{ request()->routeIs('salles.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.salles.index') }}" class="nav-link {{ request()->routeIs('salles.*') ? 'active' : '' }}">
                         <i class="bi bi-building"></i>
                         <p>Salles</p>
                     </a>

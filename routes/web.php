@@ -53,13 +53,17 @@ Route::middleware('auth')->group(function () {
 
 
 });
-
-Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+    Route::get('/', function () {
+        return view('admin.Layout.app');
+    })->name('dashboard');
     Route::resource('reunions', ReunionController::class);
     Route::resource('salles', SalleController::class);
     Route::resource('notifications', NotificationController::class);
     Route::resource('participants', ParticipantController::class);
     Route::get('participants/create/{reunion_id}', [ParticipantController::class, 'create'])->name('participants.create');
 });
+
+
 
 require __DIR__.'/auth.php';

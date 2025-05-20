@@ -5,7 +5,7 @@
     <title>Réinitialisation du mot de passe</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="body">
     <div class="wrapper">
         <div class="mb-4 text-sm text-darck-600 dark:text-darck-400">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
@@ -31,7 +31,7 @@
 <br>
             <!-- Submit -->
             <div class="forget-">
-                <button type="submit" class="register-">
+                <button type="submit" class="register">
                     {{ __('Email Password Reset Link') }}
                 </button>
             </div>

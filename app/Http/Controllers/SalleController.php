@@ -30,13 +30,13 @@ class SalleController extends Controller
 
         Salle::create($request->all());
 
-        return redirect()->route('salles.index')->with('success', 'Salle ajoutée avec succès.');
+        return redirect()->route('admin.salles.index')->with('success', 'Salle ajoutée avec succès.');
     }
 
     // Afficher une salle
     public function show(Salle $salle)
     {
-        return view('salles.show', compact('salle'));
+        return view('admin.salles.show', compact('salle'));
     }
 
     // Formulaire d'édition
@@ -56,13 +56,13 @@ class SalleController extends Controller
 
         $salle->update($request->all());
 
-        return redirect()->route('salles.index')->with('success', 'Salle mise à jour.');
+        return redirect()->route('admin.salles.index')->with('success', 'Salle mise à jour.');
     }
 
     // Supprimer
     public function destroy(Salle $salle)
     {
         $salle->delete();
-        return redirect()->route('salles.index')->with('success', 'Salle supprimée.');
+        return redirect()->route('admin.salles.index')->with('success', 'Salle supprimée.');
     }
 }

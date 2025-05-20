@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('admin.layout.app')
 @section('content')
 <style>
 
@@ -39,7 +39,7 @@
           <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title mb-0" style="margin-bottom: 0;">Liste des reunions</h3>
-                <a href="{{ route('reunions.create') }}" id="add-btn" class="btn btn-primary" style="margin: 0;">Ajouter</a>
+                <a href="{{ route('admin.reunions.create') }}" id="add-btn" class="btn btn-primary" style="margin: 0;">Ajouter</a>
             </div>
 
 
@@ -74,9 +74,9 @@
 
                         <td>
                           <div class="btn-group" style="column-gap: 0.5rem">
-                            <a href="{{ route('reunions.edit', $reunion->id)}}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
-                            <a href="{{ route('participants.create', $reunion->id) }}" class="btn btn-primary btn-sm"> <i class="bi bi-person-fill-add"></i></a>
-                            <form action="{{ route('reunions.destroy', $reunion->id) }}" onsubmit="return confirm('Are you sure?')" method="POST">
+                            <a href="{{ route('admin.reunions.edit', $reunion->id)}}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                            <a href="{{ route('admin.participants.create', $reunion->id) }}" class="btn btn-primary btn-sm"> <i class="bi bi-person-fill-add"></i></a>
+                            <form action="{{ route('admin.reunions.destroy', $reunion->id) }}" onsubmit="return confirm('Are you sure?')" method="POST">
                               @csrf
                               @method('DELETE')
                               <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>

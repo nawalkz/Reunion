@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('admin.layout.app')
 @section('content')
 <style>
 
@@ -39,7 +39,7 @@
           <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title mb-0" style="margin-bottom: 0;">Liste des salles</h3>
-                <a href="{{ route('salles.create') }}" id="add-btn" class="btn btn-primary" style="margin: 0;">Ajouter</a>
+                <a href="{{ route('admin.salles.create') }}" id="add-btn" class="btn btn-primary" style="margin: 0;">Ajouter</a>
             </div>
 
 
@@ -65,8 +65,8 @@
                         <td> {{$salle->localisation}} <td>
                         <td>
                           <div class="btn-group" style="column-gap: 0.5rem">
-                            <a href="{{ route('salles.edit', $salle->id)}}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
-                            <form action="{{ route('salles.destroy', $salle->id) }}" onsubmit="return confirm('Are you sure?')" method="POST">
+                            <a href="{{ route('admin.salles.edit', $salle->id)}}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                            <form action="{{ route('admin.salles.destroy', $salle->id) }}" onsubmit="return confirm('Are you sure?')" method="POST">
                               @csrf
                               @method('DELETE')
                               <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>

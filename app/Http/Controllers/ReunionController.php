@@ -1,19 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Notification;
 use Carbon\Carbon;
 use App\Models\Reunion;
+use App\Models\Salle;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\Log;
 
 class ReunionController extends Controller
 {
-   
+
     // Afficher la liste des réunions
     public function index()
     {
         $reunions = Reunion::with(['user', 'salle'])->latest()->get();
-        return view('reunions.index', compact('reunions'));
+        return view('admin.reunions.index', compact('reunions'));
     }
 
     // Afficher le formulaire de création
@@ -21,7 +25,7 @@ class ReunionController extends Controller
     {
         $users = User::all();
         $salles = Salle::all();
-        return view('reunions.create', compact('users', 'salles'));
+        return view('admin.reunions.create', compact('users', 'salles'));
     }
 
     // Enregistrer une nouvelle réunion
@@ -38,9 +42,9 @@ class ReunionController extends Controller
                 'salle_id' => 'required|exists:salles,id',
             ]);
 
-            Reunion::create($validated);
+            $reunion =  Reunion::create($validated);
 
-            return redirect()->route('reunions.index')->with('success', 'Réunion ajoutée avec succès.');
+            return redirect()->route('admin.reunions.index')->with('success', 'Réunion ajoutée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de l\'enregistrement de la réunion : ' . $e->getMessage());
             return back()->withErrors(['error' => 'Erreur lors de l\'enregistrement. Vérifiez les données saisies.'])->withInput();
@@ -52,7 +56,7 @@ class ReunionController extends Controller
     {
         $users = User::all();
         $salles = Salle::all();
-        return view('reunions.edit', compact('reunion', 'users', 'salles'));
+        return view('admin.reunions.edit', compact('reunion', 'users', 'salles'));
     }
 
     // Mettre à jour une réunion
@@ -70,8 +74,9 @@ class ReunionController extends Controller
             ]);
 
             $reunion->update($validated);
+            $reunion->participants()->sync($request->participants);
 
-            return redirect()->route('reunions.index')->with('success', 'Réunion mise à jour avec succès.');
+            return redirect()->route('admin.reunions.index')->with('success', 'Réunion mise à jour avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la mise à jour de la réunion : ' . $e->getMessage());
             return back()->withErrors(['error' => 'Erreur lors de la mise à jour. Vérifiez les données saisies.'])->withInput();
@@ -79,11 +84,19 @@ class ReunionController extends Controller
     }
 
     // Supprimer une réunion
-    public function destroy(Reunion $reunion)
+    public function destroy(Reunion $reunion, $id)
     {
         try {
+            $reunion = Reunion::findOrFail($id);
+
+            $message = "La réunion '{$reunion->titre}' prévue le " . $reunion->date->format('d/m/Y H:i') . " a été annulée.";
+
+            $this->sendNotifications($reunion, $message);
+
+            $reunion->participants()->detach();
+
             $reunion->delete();
-            return redirect()->route('reunions.index')->with('success', 'Réunion supprimée avec succès.');
+            return redirect()->route('admin.reunions.index')->with('success', 'Réunion supprimée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la suppression de la réunion : ' . $e->getMessage());
             return back()->withErrors(['error' => 'Erreur lors de la suppression.']);
@@ -91,7 +104,17 @@ class ReunionController extends Controller
     }
 
 
-
+    private function sendNotifications(Reunion $reunion, string $message)
+    {
+        foreach ($reunion->participants as $participant) {
+            Notification::create([
+                'user_id' => $participant->user_id,
+                'reunion_id' => $reunion->id,
+                'message' => $message,
+                'lu' => 0,
+            ]);
+        }
+    }
     public function reunionsSemaine()
     {
         // Récupérer l'utilisateur connecté
@@ -102,7 +125,7 @@ class ReunionController extends Controller
         $endOfWeek = Carbon::now()->endOfWeek();     // Dimanche
 
         // Obtenir les réunions où l'utilisateur est participant, durant cette semaine
-        $reunions = $user->participations()
+        $reunions = $user->reunions()
             ->whereBetween('date', [$startOfWeek, $endOfWeek])
             ->with('salle') // Charger la relation salle
             ->orderBy('date')
@@ -122,7 +145,7 @@ class ReunionController extends Controller
         $endOfNextWeek = Carbon::now()->addWeek()->endOfWeek();     // Dimanche prochain
 
         // Récupérer les réunions de la semaine prochaine où l'utilisateur est participant
-        $reunions = $user->participations()
+        $reunions = $user->reunions()
             ->whereBetween('date', [$startOfNextWeek, $endOfNextWeek])
             ->with('salle')
             ->orderBy('date')
@@ -130,41 +153,33 @@ class ReunionController extends Controller
 
         return view('users.reunions.semaine_prochaine', compact('reunions'));
     }
+    public function reunionsImportantes()
+    {
+        $user = auth()->user();
 
+        // Récupérer les réunions importantes (importance = 1)
+        $reunions = $user->reunions()
+            ->where('importance', 1)
+            ->with('salle')
+            ->orderBy('date')
+            ->get();
 
-
-public function reunionsImportantes()
-{
-    $user = auth()->user();
-
-    // Récupérer les réunions importantes (importance = 1)
-    $reunions = $user->participations()
-        ->where('importance', 1)
-        ->with('salle')
-        ->orderBy('date')
-        ->get();
-
-    return view('users.reunions.importantes', compact('reunions'));
-}
+        return view('users.reunions.importantes', compact('reunions'));
+    }
 
 
     public function search(Request $request)
-{
-    $query = Reunion::query();
+    {
+        $query = Reunion::query();
+        
+        if ($request->has('titre') && !empty($request->titre)) {
+            $query->where('titre', 'like', '%' . $request->titre . '%');
+        }
 
-    if ($request->has('user_id') && !empty($request->user_id)) {
-        $query->where('user_id', $request->user_id);
+        $reunions = $query->paginate(10)->appends($request->query());
+
+        return response()->json([
+            'reunions' => view('users.reunions.reunion_partial', compact('reunions'))->render()
+        ]);
     }
-
-    if ($request->has('titre') && !empty($request->titre)) {
-        $query->where('titre', 'like', '%' . $request->titre . '%');
-    }
-
-    $reunions = $query->paginate(10)->appends($request->query());
-
-    return response()->json([
-        'reunions' => view('users.reunions.reunion_partial', compact('reunions'))->render()
-    ]);
 }
-}
-

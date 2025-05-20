@@ -36,6 +36,7 @@ class AdminRegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'isadmin' => 1,
         ]);
 
         return redirect('/login')->with('message', 'Admin enregistré avec succès.');
