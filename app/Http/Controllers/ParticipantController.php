@@ -54,12 +54,12 @@ class ParticipantController extends Controller
 
         $participant->update($validated);
 
-        return redirect()->route('participants.index')->with('success', 'Participant mis à jour.');
+        return redirect()->route('admin.participants.index')->with('success', 'Participant mis à jour.');
     }
 
     public function destroy(Participant $participant)
     {
         $participant->delete();
-        return redirect()->route('participants.index')->with('success', 'Participant supprimé.');
+        return redirect()->route('admin.participants.index')->with('success', 'Participant supprimé.');
     }
 }

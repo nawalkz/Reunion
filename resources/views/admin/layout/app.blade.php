@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <!--begin::Head-->
-  @include('layout.head')
+  @include('admin.layout.head')
   <!--end::Head-->
   <!--begin::Body-->
   <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

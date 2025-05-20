@@ -42,7 +42,7 @@ class ReunionController extends Controller
 
             Reunion::create($validated);
 
-            return redirect()->route('reunions.index')->with('success', 'Réunion ajoutée avec succès.');
+            return redirect()->route('admin.reunions.index')->with('success', 'Réunion ajoutée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de l\'enregistrement de la réunion : ' . $e->getMessage());
             return back()->withErrors(['error' => 'Erreur lors de l\'enregistrement. Vérifiez les données saisies.'])->withInput();
@@ -73,7 +73,7 @@ class ReunionController extends Controller
 
             $reunion->update($validated);
 
-            return redirect()->route('reunions.index')->with('success', 'Réunion mise à jour avec succès.');
+            return redirect()->route('admin.reunions.index')->with('success', 'Réunion mise à jour avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la mise à jour de la réunion : ' . $e->getMessage());
             return back()->withErrors(['error' => 'Erreur lors de la mise à jour. Vérifiez les données saisies.'])->withInput();
@@ -85,7 +85,7 @@ class ReunionController extends Controller
     {
         try {
             $reunion->delete();
-            return redirect()->route('reunions.index')->with('success', 'Réunion supprimée avec succès.');
+            return redirect()->route('admin.reunions.index')->with('success', 'Réunion supprimée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la suppression de la réunion : ' . $e->getMessage());
             return back()->withErrors(['error' => 'Erreur lors de la suppression.']);

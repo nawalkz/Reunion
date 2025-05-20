@@ -10,7 +10,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('participants.store') }}" method="POST">
+    <form action="{{ route('admin.participants.store') }}" method="POST">
         @csrf
         <input type="hidden" name="reunion_id" value="{{ $reunion->id }}">
 

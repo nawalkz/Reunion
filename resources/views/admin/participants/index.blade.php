@@ -26,7 +26,7 @@
                     <div class="card-header">
                         <h3 class="card-title mb-0">Liste des participants</h3>
                         <!-- Adjust the create link to require a reunion_id -->
-                        <a href="{{ route('reunions.index') }}" id="add-btn" class="btn btn-primary">Choisir une réunion</a>
+                        <a href="{{ route('admin.reunions.index') }}" id="add-btn" class="btn btn-primary">Choisir une réunion</a>
                     </div>
                     <div class="card-body">
                         @if (session('success'))
@@ -55,10 +55,10 @@
                                         <td>{{ $participant->reunion->titre ?? 'N/A' }}</td>
                                         <td>
                                             <div class="btn-group" style="column-gap: 0.5rem">
-                                                <a href="{{ route('participants.edit', $participant->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ route('admin.participants.edit', $participant->id) }}" class="btn btn-warning btn-sm">
                                                     <i class="bi bi-pencil-fill"></i>
                                                 </a>
-                                                <form action="{{ route('participants.destroy', $participant->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr ?')">
+                                                <form action="{{ route('admin.participants.destroy', $participant->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr ?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">

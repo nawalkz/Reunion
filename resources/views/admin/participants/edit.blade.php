@@ -8,7 +8,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('participants.update', $participant->id) }}" method="POST">
+    <form action="{{ route('admin.participants.update', $participant->id) }}" method="POST">
         @csrf
         @method('PUT')
         <input type="hidden" name="reunion_id" value="{{ $reunion->id }}">

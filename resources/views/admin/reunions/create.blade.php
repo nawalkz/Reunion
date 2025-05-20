@@ -1,4 +1,4 @@
-@extends(admin.'layout.app')
+@extends('admin.layout.app')
 
 @section('content')
 <div class="app-content mt-5">
@@ -23,7 +23,7 @@
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
 
-                        <form action="{{ route('reunions.store') }}" method="POST">
+                        <form action="{{ route('admin.reunions.store') }}" method="POST">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="titre">Titre</label>
@@ -97,4 +97,5 @@
         </div>
     </div>
 </div>
+{{ Log::debug('Contexte autour de la ligne 100', ['admin_defined' => defined('admin') ? admin : 'undefined']) }}
 @endsection

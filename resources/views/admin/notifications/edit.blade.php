@@ -17,7 +17,7 @@
                             $users = App\Models\User::all();
                         @endphp
                         <div class="card-body">
-                            <form action="{{ route('notifications.update', $notification->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.notifications.update', $notification->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">

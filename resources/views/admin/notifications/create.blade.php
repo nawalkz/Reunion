@@ -17,7 +17,7 @@
                             $users = \App\Models\User::all();
                         @endphp
                         <div class="card-body">
-                            <form action="{{ route('notifications.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.notifications.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="message">message</label>
