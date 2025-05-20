@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layoute.app')
 
 @section('content')
 <!-- Section Hero -->
@@ -18,10 +18,23 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card h-100">
+                <a href="{{ route('users.reunions.documentation') }}" class="text-decoration-none">
+                    <div class="card h-100">
+                       <div class="card-body">
+                         <h3>Documentation</h3>
+                         <p>Règles à suivre et erreurs à éviter dans les réunions</p>
+                        </div>
+                     </div>
+                </a>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
                 <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Réunion aujourd’hui</h5>
-                    <a href="{{ route('Users.today') }}" class="btn btn-primary">Voir</a>
+                    <a href="{{ route('users.reunions.semaine') }}" class="btn btn-primary">Voir</a>
                 </div>
             </div>
         </div>
@@ -30,7 +43,7 @@
                 <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Réunion bientôt</h5>
-                     <a href="{{ route('Users.soon') }}" class="btn btn-primary">Voir</a>
+                     <a href="{{ route('users.reunions.semaine_prochaine') }}" class="btn btn-primary">Voir</a>
                 </div>
             </div>
         </div>
@@ -39,7 +52,7 @@
                 <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Réunion importante</h5>
-                     <a href="{{ route('Users.important') }}" class="btn btn-primary">Voir</a>
+                     <a href="{{ route('users.reunions.importantes') }}" class="btn btn-primary">Voir</a>
                 </div>
             </div>
         </div>

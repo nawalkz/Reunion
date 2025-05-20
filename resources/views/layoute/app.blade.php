@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  @include('layout.head')
+  @include('layoute.head')
   
 </head>
 <body>
-    @include('layout.navbar')
+    @include('layoute.header')
+    @include('layoute.navbar')
      <main class="min-h-screen">
         @yield('content')
     </main>
-    @include('layout.footer')
-    @include('layout.scripts')
+    @include('layoute.footer')
+    @include('layoute.scripts')
 </body>
 
 </html>
