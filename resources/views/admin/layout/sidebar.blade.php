@@ -6,12 +6,12 @@
       <a href="./index.html" class="brand-link">
         <!--begin::Brand Image-->
         <img
-          src="../../dist/assets/img/logo.png"
+          src="../../dist/assets/img/logo2.png"
           class="brand-image opacity-75 shadow"
         />
         <!--end::Brand Image-->
         <!--begin::Brand Text-->
-        <span class="brand-text fw-light">RéunionFacile</span>
+        <span class="brand-text fw-light">MeetFlow</span>
         <!--end::Brand Text-->
       </a>
       <!--end::Brand Link-->
