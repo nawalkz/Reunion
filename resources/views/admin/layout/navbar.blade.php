@@ -38,11 +38,7 @@
               <!--begin::Message-->
               <div class="d-flex">
                 <div class="flex-shrink-0">
-                  <img
-                    src="../../dist/assets/img/user8-128x128.jpg"
-                    alt="User Avatar"
-                    class="img-size-50 rounded-circle me-3"
-                  />
+                  
                 </div>
                 <div class="flex-grow-1">
                   <h3 class="dropdown-item-title">
@@ -71,12 +67,7 @@
                   />
                 </div>
                 <div class="flex-grow-1">
-                  <h3 class="dropdown-item-title">
-                    Cheb L3arbi
-                    <span class="float-end fs-7 text-warning">
-                      <i class="bi bi-star-fill"></i>
-                    </span>
-                  </h3>
+                 
                   <p class="fs-7">The subject goes here</p>
                   <p class="fs-7 text-secondary">
                     <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
@@ -122,24 +113,13 @@
         <!--begin::User Menu Dropdown-->
         <li class="nav-item dropdown user-menu">
           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-            <img
-              src="../../dist/assets/img/user3-128x128.jpg"
-              class="user-image rounded-circle shadow"
-              alt="User Image"
-            />
+            
           </a>
           <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
             <!--begin::User Image-->
             <li class="user-header text-bg-primary">
-              <img
-                src="../../dist/assets/img/user3-128x128.jpg"
-                class="rounded-circle shadow"
-                alt="User Image"
-              />
-              <p>
-                Cheb L3arbi - Moghani sentimentale
-                <small>7akm Lkhnada9 since Nov. 2020. Kayn3as ta 12 d lil.</small>
-              </p>
+             
+              
             </li>
             <!--end::User Image-->
             <!--begin::Menu Body-->
