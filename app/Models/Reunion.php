@@ -10,6 +10,9 @@ class Reunion extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+protected $casts = [
+    'date' => 'datetime',
+];
 
     // 🔗 Créateur (admin)
     public function user()
@@ -25,15 +28,17 @@ class Reunion extends Model
 
     // 🔗 Liaisons de participation (pivot)
     public function participants()
-    {
-        return $this->hasMany(Participant::class);
-    }
+{
+    return $this->hasMany(Participant::class);
+}
+
 
     // 🔗 Utilisateurs participants (many-to-many)
     public function users()
-    {
-        return $this->belongsToMany(User::class, 'participants');
-    }
+{
+    return $this->belongsToMany(User::class, 'participants');
+}
+
 
     // 🔔 Notifications liées à la réunion
     public function notifications()

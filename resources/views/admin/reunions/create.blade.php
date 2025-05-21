@@ -75,7 +75,14 @@
                                 @error('user_id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> 
+                     <div class="form-group mb-3">   
+                             <label for="participants">Choisir les participants :</label>
+    <select name="participants[]" id="participants" multiple required>
+        @foreach ($users as $user)
+            <option value="{{ $user->id }}">{{ $user->name }}</option>
+        @endforeach
+    </select>  </div> 
                             <div class="form-group mb-3">
                                 <label for="salle_id">Salle</label>
                                 <select class="form-control" id="salle_id" name="salle_id" required>

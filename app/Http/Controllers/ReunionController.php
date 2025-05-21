@@ -30,26 +30,51 @@ class ReunionController extends Controller
 
     // Enregistrer une nouvelle réunion
     public function store(Request $request)
-    {
-        try {
-            $validated = $request->validate([
-                'titre' => 'required|string|max:255',
-                'date' => 'required|date',
-                'lieu' => 'required|string|max:255',
-                'create_by' => 'required|string|max:255',
-                'importance' => 'required|boolean',
-                'user_id' => 'required|exists:users,id',
-                'salle_id' => 'required|exists:salles,id',
-            ]);
+{
+    // Valider les données
+   
 
-            $reunion =  Reunion::create($validated);
+    $request->validate([
+        'titre' => 'required|string|max:255',
+        'date' => 'required|date',
+        'salle_id' => 'required|exists:salles,id',
+        'participants' => 'required|array',
+        'participants.*' => 'exists:users,id',
+        'importance' => 'nullable|boolean',
+        'lieu' => 'required|string|max:255',
+    'create_by' => 'required|string|max:255',
+    ]);
 
-            return redirect()->route('admin.reunions.index')->with('success', 'Réunion ajoutée avec succès.');
-        } catch (\Exception $e) {
-            Log::error('Erreur lors de l\'enregistrement de la réunion : ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Erreur lors de l\'enregistrement. Vérifiez les données saisies.'])->withInput();
-        }
+    // Créer la réunion
+    $reunion = Reunion::create([
+        'titre' => $request->titre,
+        'date' => $request->date,
+        'salle_id' => $request->salle_id,
+        'user_id' => auth()->id(), // admin créateur
+        'importance' => $request->importance ?? 0,
+        'lieu' => $request->lieu,
+        'create_by' => $request->create_by, 
+    ]);
+
+    // Ajouter les participants
+    foreach ($request->participants as $userId) {
+        $reunion->participants()->create([
+            'user_id' => $userId,
+            'status' => 'attended',
+        ]);
+
+        // Créer une notification
+        Notification::create([
+            'user_id' => $userId,
+            'reunion_id' => $reunion->id,
+            'message' => "Nouvelle réunion '{$reunion->titre}' prévue le {$reunion->date->format('d/m/Y H:i')}",
+            'lu' => 0,
+        ]);
     }
+
+    return redirect()->route('admin.reunions.index')->with('success', 'Réunion créée avec succès.');
+}
+
 
     // Afficher le formulaire d’édition
     public function edit(Reunion $reunion)
@@ -61,60 +86,106 @@ class ReunionController extends Controller
 
     // Mettre à jour une réunion
     public function update(Request $request, Reunion $reunion)
-    {
-        try {
-            $validated = $request->validate([
-                'titre' => 'required|string|max:255',
-                'date' => 'required|date',
-                'lieu' => 'required|string|max:255',
-                'create_by' => 'required|string|max:255',
-                'importance' => 'required|boolean',
-                'user_id' => 'required|exists:users,id',
-                'salle_id' => 'required|exists:salles,id',
-            ]);
+{
+    
+    // Valider les données
+    $request->validate([
+        'titre' => 'required|string|max:255',
+        'date' => 'required|date',
+        'salle_id' => 'required|exists:salles,id',
+        'participants' => 'required|array',
+        'participants.*' => 'exists:users,id',
+        'importance' => 'nullable|boolean',
+         'lieu' => 'required|string|max:255',
+    'create_by' => 'required|string|max:255',
+    ]);
 
-            $reunion->update($validated);
-            $reunion->participants()->sync($request->participants);
+    // Mettre à jour les informations de la réunion
+    $reunion->update([
+        'titre' => $request->titre,
+        'date' => $request->date,
+        'salle_id' => $request->salle_id,
+        'importance' => $request->importance ?? 0,
+        'lieu' => $request->lieu,
+        'create_by' => $request->create_by,
+    ]);
 
-            return redirect()->route('admin.reunions.index')->with('success', 'Réunion mise à jour avec succès.');
-        } catch (\Exception $e) {
-            Log::error('Erreur lors de la mise à jour de la réunion : ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Erreur lors de la mise à jour. Vérifiez les données saisies.'])->withInput();
-        }
+    // Supprimer les anciens participants et notifications
+    $reunion->participants()->delete();
+    $reunion->notifications()->delete();
+
+    // Réassocier les nouveaux participants et recréer les notifications
+    foreach ($request->participants as $userId) {
+        $reunion->participants()->create([
+            'user_id' => $userId,
+            'status' => 'attended',
+        ]);
+
+        Notification::create([
+            'user_id' => $userId,
+            'reunion_id' => $reunion->id,
+            'message' => "La réunion '{$reunion->titre}' a été modifiée. Nouvelle date : {$reunion->date->format('d/m/Y H:i')}",
+            'lu' => 0,
+        ]);
     }
+
+    return redirect()->route('admin.reunions.index')->with('success', 'Réunion mise à jour avec succès.');
+}
 
     // Supprimer une réunion
-    public function destroy(Reunion $reunion, $id)
-    {
-        try {
-            $reunion = Reunion::findOrFail($id);
+   public function destroy(Reunion $reunion)
+{
+    try {
+        // رسالة الإشعار قبل الحذف
+        $message = "L'événement '{$reunion->titre}' a été supprimé.";
 
-            $message = "La réunion '{$reunion->titre}' prévue le " . $reunion->date->format('d/m/Y H:i') . " a été annulée.";
-
-            $this->sendNotifications($reunion, $message);
-
-            $reunion->participants()->detach();
-
-            $reunion->delete();
-            return redirect()->route('admin.reunions.index')->with('success', 'Réunion supprimée avec succès.');
-        } catch (\Exception $e) {
-            Log::error('Erreur lors de la suppression de la réunion : ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Erreur lors de la suppression.']);
-        }
-    }
-
-
-    private function sendNotifications(Reunion $reunion, string $message)
-    {
+        // إرسال إشعار لكل مشارك
         foreach ($reunion->participants as $participant) {
-            Notification::create([
-                'user_id' => $participant->user_id,
-                'reunion_id' => $reunion->id,
-                'message' => $message,
-                'lu' => 0,
-            ]);
-        }
+    Notification::create([
+        'user_id' => $participant->user_id,
+        // نحيدو الربط بـ reunion_id
+        'message' => $message,
+        'lu' => 0,
+    ]);
+}
+        // حذف المشاركين فقط (مش الحذف كامل مع الإشعارات)
+        $reunion->participants()->delete();
+
+        // **ما تمسحش الإشعارات** باش تبقى ظاهرة
+
+        // حذف الاجتماع نفسه
+        $reunion->delete();
+
+        return redirect()->route('admin.reunions.index')->with('success', 'Réunion supprimée avec succès.');
+    } catch (\Exception $e) {
+        return back()->withErrors(['error' => 'Erreur lors de la suppression : ' . $e->getMessage()]);
     }
+}
+
+
+
+
+
+
+   private function sendNotifications(Reunion $reunion, string $message)
+{
+    // نجيب جميع المستخدمين المرتبطين بهاد الاجتماع
+    $users = $reunion->users; // العلاقة many-to-many
+
+    foreach ($users as $user) {
+        Notification::create([
+            'user_id' => $user->id,
+            'reunion_id' => $reunion->id,
+            'message' => $message,
+            'lu' => 0,
+        ]);
+    }
+}
+
+
+
+
+
     public function reunionsSemaine()
     {
         // Récupérer l'utilisateur connecté
@@ -171,7 +242,7 @@ class ReunionController extends Controller
     public function search(Request $request)
     {
         $query = Reunion::query();
-        
+
         if ($request->has('titre') && !empty($request->titre)) {
             $query->where('titre', 'like', '%' . $request->titre . '%');
         }

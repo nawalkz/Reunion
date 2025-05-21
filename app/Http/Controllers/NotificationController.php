@@ -4,10 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
    
+// NotificationController@index
+public function index()
+{
+    $notifications = Notification::where('user_id', auth()->id())
+    ->latest()
+    ->get();
+
+    return view('users.notifications.index', compact('notifications'));
+}
+
 
 public function markAsRead($id)
 {

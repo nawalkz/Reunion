@@ -20,6 +20,7 @@ class User extends Authenticatable
     return $this->belongsToMany(Reunion::class, 'participants');
 }
 
+
     public function participants()
     {
         return $this->hasMany(Participant::class);
