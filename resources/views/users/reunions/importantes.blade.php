@@ -51,6 +51,10 @@
             <div class="col-12 text-center">
                 <div class="alert alert-warning">Aucune réunion importante trouvée.</div>
             </div>
+            <div class="d-flex justify-content-between mt-4">
+            <a href="{{ route('users.reunion.home') }}" class="btn btn-outline-secondary shadow-sm">
+                <i class="bi bi-arrow-left"></i> Retourn
+            </a>
         @endforelse
     </div>
 </div>
