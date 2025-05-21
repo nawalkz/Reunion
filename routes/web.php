@@ -36,6 +36,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 // تعليم إشعار كمقروء
 Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+Route::get('/notifications/index', [NotificationController::class, 'index'])->name('notifications.index');
 
 // تعليم الكل كمقروء
 Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');

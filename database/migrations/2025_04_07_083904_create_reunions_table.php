@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reunions', function (Blueprint $table) {
             $table->id();
             $table->string('titre');
-            $table->date('date');
+            $table->dateTime('date');
             $table->string('lieu');
             $table->string('create_by');
             $table->boolean ('importance');
