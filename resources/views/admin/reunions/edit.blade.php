@@ -25,7 +25,8 @@
                                     <input type="text" class="form-control" id="titre" name="titre" value="{{ $reunion->titre }}" required>
                                 </div>
                                 <div class="form-group">
-                                    <select name="participants[]" multiple>
+                                    <label for="titre">Participant</label>
+                                    <select  class="form-control "name="participants[]" >
                                         @foreach ($users as $user)
                                         <option value="{{ $user->id }}" {{ in_array($user->id, $reunion->participants->pluck('user_id')->toArray()) ? 'selected' : '' }}>
                                             {{ $user->name }}

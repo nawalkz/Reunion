@@ -78,7 +78,7 @@
                             </div> 
                      <div class="form-group mb-3">   
                              <label for="participants">Choisir les participants :</label>
-    <select name="participants[]" id="participants" multiple required>
+    <select  class="form-control" name="participants[]" id="participants" required>
         @foreach ($users as $user)
             <option value="{{ $user->id }}">{{ $user->name }}</option>
         @endforeach

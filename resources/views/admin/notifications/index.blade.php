@@ -1,98 +1,85 @@
 @extends('admin.layout.app')
+
 @section('content')
 <style>
-
-    .custom-pagination {
-        /* color: #0fb6cc;
-        border: 1px solid #7e1414; */
-        margin: 0 2px;
-    }
-    /* .custom-pagination  {
-        background-color: #0fb6cc;
-        border-color: #0fb6cc;
-        color: white;
-    } */
-
-    .custom-pagination .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
     .card-header {
-    height: auto; /* Or a specific value like 60px */
-}
-
-#add-btn {
-    position: absolute;
-    right: 10px;
-    /* top: 10px; */
-}
-
-
+        height: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #mark-all-btn {
+        margin: 0;
+    }
+    .notification-unread {
+        background-color: #e6f3ff;
+    }
+    .notification-read {
+        background-color: #f8f9fa;
+    }
 </style>
+
 <div class="app-content mt-5">
-    <!--begin::Container-->
     <div class="container-fluid">
-      <!--begin::Row-->
-      <div class="row">
-        <div class="col-md">
-          <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0" style="margin-bottom: 0;">Liste des notifications</h3>
-                <a href="{{ route('admin.notifications.create') }}" id="add-btn" class="btn btn-primary" style="margin: 0;">Ajouter</a>
-            </div>
+        <div class="row">
+            <div class="col-md">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0">Mes Notifications</h3>
+                        @if ($notifications->where('lu', 0)->count() > 0)
+                                @csrf
+                                <button type="submit" id="mark-all-btn" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-check"></i> Tout marquer comme lu
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        @if (session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
 
-
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th style="width: 10px">Id</th>
-                     <th style="width: 10px">message</th>
-                      <th style="width: 10px">lu</th>
-                       <th style="width: 10px">user</th>
-                       <th style="width: 10px">reunion</th>
-                     <th style="width: 10px">action</th>
-                  </tr>
-                </thead>
-               <tbody>
-    @foreach ($notifications as $notification)
-    <tr class="align-middle">
-        <td>{{ $notification->id }}</td>
-        <td>{{ $notification->message }}</td>
-        <td>{{ $notification->lu }}</td>
-        <td>{{ $notification->user->name ?? 'N/A' }}</td>
-        <td>{{ $notification->reunion->titre ?? 'N/A' }}</td>
-        <td>
-          <div class="btn-group" style="column-gap: 0.5rem">
-            <a href="{{ route('admin.notifications.edit', $notification->id) }}" class="btn btn-warning btn-sm">
-                <i class="bi bi-pencil-fill"></i>
-            </a>
-            <form action="{{ route('admin.notifications.destroy', $notification->id) }}" onsubmit="return confirm('Are you sure?')" method="POST">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
-            </form>
-          </div>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
-
-              </table>
-            </div>
-            <!-- /.card-body -->
-            {{-- <div class="card-footer clearfix">
-                <div class=" custom-pagination pagination-sm m-0 float-end">
-                    {{ $notifications->links('pagination::bootstrap-5') }}
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">ID</th>
+                                    <th>Message</th>
+                                    <th style="width: 150px">Date</th>
+                                    <th style="width: 150px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($notifications as $notification)
+                                    <tr class="align-middle {{ $notification->lu ? 'notification-read' : 'notification-unread' }}">
+                                        <td>{{ $notification->id }}</td>
+                                        <td>{{ $notification->message }}</td>
+                                        <td>{{ $notification->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            @if (!$notification->lu)
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                        <i class="fas fa-check"></i> Marquer
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <span class="text-muted">Lue</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4">Aucune notification trouvée.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div> --}}
-
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-
 </div>
 @endsection

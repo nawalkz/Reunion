@@ -75,7 +75,6 @@
                         <td>
                           <div class="btn-group" style="column-gap: 0.5rem">
                             <a href="{{ route('admin.reunions.edit', $reunion->id)}}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
-                            <a href="{{ route('admin.participants.create', $reunion->id) }}" class="btn btn-primary btn-sm"> <i class="bi bi-person-fill-add"></i></a>
                             <form action="{{ route('admin.reunions.destroy', $reunion->id) }}" onsubmit="return confirm('Are you sure?')" method="POST">
                               @csrf
                               @method('DELETE')
@@ -89,11 +88,7 @@
               </table>
             </div>
             <!-- /.card-body -->
-            {{-- <div class="card-footer clearfix">
-                <div class=" custom-pagination pagination-sm m-0 float-end">
-                    {{ $reunions->links('pagination::bootstrap-5') }}
-                </div>
-            </div> --}}
+           
 
           </div>
         </div>

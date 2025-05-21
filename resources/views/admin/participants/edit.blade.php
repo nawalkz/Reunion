@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1>Modifier le participant pour {{ $reunion->titre }}</h1>
+    <h1>Modifier le participant</h1>
 
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
@@ -11,7 +11,7 @@
     <form action="{{ route('admin.participants.update', $participant->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <input type="hidden" name="reunion_id" value="{{ $reunion->id }}">
+        <input type="hidden" name="reunion_id" >
         <div class="mb-3">
             <label for="user_id" class="form-label">Utilisateur</label>
             <select name="user_id" id="user_id" class="form-control" required>

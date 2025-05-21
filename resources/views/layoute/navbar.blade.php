@@ -1,11 +1,11 @@
 <nav class="flex items-center justify-between px-8 py-4 shadow-md bg-white">
     {{-- Partie gauche (Logo + liens selon la page) --}}
     <div class="flex items-center space-x-4">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8">
+        <img src="../../dist/assets/img/logo2.png" alt="Logo" class="h-8">
 
         {{-- Lien Home / Réunions / Blogs (pages internes uniquement) --}}
         @if (!Request::is('users/reunions/home'))
-    <a href="{{ route('users.reunions.home') }}" class="text-gray-600 hover:text-blue-600">Home</a>
+    <a href="{{ route('users.reunions.home') }}" class="text-gray-600 hover:text-blue-600">Hoons</a>
     <a href="{{ route('users.reunions.documentation') }}" class="text-gray-600 hover:text-blue-600">Documentation</a>
 @endif
 

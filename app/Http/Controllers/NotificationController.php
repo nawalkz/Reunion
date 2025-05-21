@@ -16,7 +16,7 @@ public function index()
     ->latest()
     ->get();
 
-    return view('users.notifications.index', compact('notifications'));
+    return view('admin.notifications.index', compact('notifications'));
 }
 
 
