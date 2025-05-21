@@ -23,9 +23,10 @@ use App\Http\Controllers\SalleController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/users/reunions/home', function () {
+    return view('users.reunions.home');
+})->name('users.reunions.home');
+
 
 Route::get('/users/reunions/documentation', function () {
     return view('Use.reunions.documentation');
