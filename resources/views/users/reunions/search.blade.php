@@ -19,4 +19,5 @@
         <p class="mt-3">Aucune réunion trouvée.</p>
     @endif
 </div>
+
 @endsection
