@@ -63,7 +63,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('notifications', NotificationController::class);
     Route::resource('participants', ParticipantController::class);
     Route::get('participants/create/{reunion_id}', [ParticipantController::class, 'create'])->name('participants.create');
-});
+  });
 
 
 
