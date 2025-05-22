@@ -13,6 +13,7 @@
                     Salle : {{ $reunion->salle->nom ?? 'Non assignée' }}
                 </li>
             @endforeach
+            
         </ul>
     @else
         <p class="mt-3">Aucune réunion trouvée.</p>
