@@ -61,8 +61,8 @@
                     <tr class="align-middle">
                         <td>{{ $salle->id }}</td>
                         <td>{{ $salle->designation }}</td>
-                         <td> {{$salle->capacite}} <td>
-                        <td> {{$salle->localisation}} <td>
+                         <td> {{$salle->capacite}} </td>
+                        <td> {{$salle->localisation}} </td>
                         <td>
                           <div class="btn-group" style="column-gap: 0.5rem">
                             <a href="{{ route('admin.salles.edit', $salle->id)}}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>

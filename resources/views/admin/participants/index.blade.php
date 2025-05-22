@@ -2,11 +2,7 @@
 
 @section('content')
 <style>
-    .custom-pagination {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
+
     .card-header {
         height: auto;
         display: flex;
@@ -26,7 +22,6 @@
                     <div class="card-header">
                         <h3 class="card-title mb-0">Liste des participants</h3>
                         <!-- Adjust the create link to require a reunion_id -->
-                        <a href="{{ route('admin.reunions.index') }}" id="add-btn" class="btn btn-primary">Choisir une réunion</a>
                     </div>
                     <div class="card-body">
                         @if (session('success'))

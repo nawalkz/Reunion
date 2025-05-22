@@ -23,7 +23,7 @@ use App\Http\Controllers\SalleController;
 |
 */
 
-Route::get('/users/reunions/home', function () {
+Route::get('/', function () {
     return view('users.reunions.home');
 })->name('users.reunions.home');
 
@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/reunions/semaine', [ReunionController::class, 'reunionsSemaine'])->name('users.reunions.semaine');
     Route::get('/users/reunions/semaine-prochaine', [ReunionController::class, 'reunionsSemaineProchaine'])->name('users.reunions.semaineProchaine');
     Route::get('/users/reunions/importantes', [ReunionController::class, 'reunionsImportantes'])->name('users.reunions.importantes');
+Route::get('/users//reunions/search', [ReunionController::class, 'search'])->name('users.reunions.search');
 
 
 });
@@ -64,7 +65,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('notifications', NotificationController::class);
     Route::resource('participants', ParticipantController::class);
     Route::get('participants/create/{reunion_id}', [ParticipantController::class, 'create'])->name('participants.create');
-});
+  });
 
 
 

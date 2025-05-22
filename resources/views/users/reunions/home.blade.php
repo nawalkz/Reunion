@@ -6,10 +6,11 @@
     <div class="container">
         <h1 class="display-4 fw-bold">Bienvenue sur votre espace de gestion de réunions</h1>
         <p class="lead">Planifiez, gérez et suivez vos réunions en toute simplicité.</p>
-        <form class="d-flex justify-content-center mt-4">
-            <input class="form-control w-50 me-2" type="search" placeholder="Rechercher une réunion..." aria-label="Search">
-            <button class="btn btn-primary">Rechercher</button>
-        </form>
+        <form action="{{ route('users.reunions.search') }}" method="GET" class="d-flex" role="search">
+    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une réunion" aria-label="Search">
+    <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+</form>
+
     </div>
 </div>
 
@@ -43,7 +44,7 @@
                 <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Réunion bientôt</h5>
-                     <a href="{{ route('users.reunions.semaine_prochaine') }}" class="btn btn-primary">Voir</a>
+                     <a href="{{ route('users.reunions.semaineProchaine') }}" class="btn btn-primary">Voir</a>
                 </div>
             </div>
         </div>
