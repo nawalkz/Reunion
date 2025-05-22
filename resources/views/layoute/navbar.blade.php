@@ -6,7 +6,6 @@
         {{-- Lien Home / Réunions / Blogs (pages internes uniquement) --}}
         @if (!Request::is('users/reunions/home'))
     <a href="{{ route('users.reunions.home') }}" class="text-gray-600 hover:text-blue-600">Home</a>
-    <a href="{{ route('users.reunions.index') }}" class="text-gray-600 hover:text-blue-600">Réunions</a>
     <a href="{{ route('users.reunions.documentation') }}" class="text-gray-600 hover:text-blue-600">Documentation</a>
 @endif
 
