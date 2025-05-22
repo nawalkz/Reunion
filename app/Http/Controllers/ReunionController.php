@@ -248,6 +248,14 @@ public function search(Request $request)
     return view('users.reunions.search', compact('reunions', 'query'));
 }
 
+public function autocompleteTitre(Request $request)
+{
+    $term = $request->get('term');
+    $results = Reunion::where('titre', 'LIKE', '%' . $term . '%')
+        ->select('id', 'titre as value') // 'value' هو لي كيتعرض فـ jQuery UI
+        ->get();
 
+    return response()->json($results);
+}
     
 }
