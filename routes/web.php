@@ -24,8 +24,9 @@ use App\Http\Controllers\SalleController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('users.reunions.home');
+})->name('users.reunions.home');
+
 
 Route::get('/users/reunions/documentation', function () {
     return view('Use.reunions.documentation');
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/reunions/semaine', [ReunionController::class, 'reunionsSemaine'])->name('users.reunions.semaine');
     Route::get('/users/reunions/semaine-prochaine', [ReunionController::class, 'reunionsSemaineProchaine'])->name('users.reunions.semaineProchaine');
     Route::get('/users/reunions/importantes', [ReunionController::class, 'reunionsImportantes'])->name('users.reunions.importantes');
+Route::get('/users//reunions/search', [ReunionController::class, 'search'])->name('users.reunions.search');
 
 
 });
