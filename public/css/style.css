@@ -2,3 +2,54 @@
     transform: scale(1.02);
     transition: 0.3s ease-in-out;
 }
+
+/* Custom styling for the navbar */
+nav {
+  transition: all 0.3s ease;
+}
+
+.brand-image {
+  transition: all 0.3s ease;
+}
+
+.brand-image:hover {
+  opacity: 1;
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Notification badge animation */
+button[aria-label="View Notifications"] .fa-bell {
+  position: relative;
+}
+
+button[aria-label="View Notifications"]:hover .fa-bell {
+  animation: bell-shake 0.5s ease;
+}
+
+@keyframes bell-shake {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0); }
+}
+
+/* Mobile menu slide-in effect */
+#mobile-menu {
+  transition: all 0.3s ease;
+}
+
+#mobile-menu:not(.hidden) {
+  transform: translateY(0);
+}
+
+#mobile-menu.hidden {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+/* Focus states for accessibility */
+a:focus, button:focus {
+  outline: 2px solid #1E3A8A; /* Navy blue outline */
+  outline-offset: 2px;
+}

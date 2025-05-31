@@ -29,7 +29,7 @@ Route::get('/', function () {
 
 
 Route::get('/users/reunions/documentation', function () {
-    return view('Use.reunions.documentation');
+    return view('users.reunions.documentation');
 })->name('users.reunions.documentation');
 
 Route::get('/dashboard', function () {

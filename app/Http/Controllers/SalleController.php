@@ -65,4 +65,5 @@ class SalleController extends Controller
         $salle->delete();
         return redirect()->route('admin.salles.index')->with('success', 'Salle supprimée.');
     }
+    
 }

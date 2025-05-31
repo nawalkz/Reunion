@@ -11,11 +11,10 @@ class AdminRegisterController extends Controller
 {
     public function create()
     {
-        // إذا كان كاين Admin واحد على الأقل، منمنع الدخول
+// If there is at least one Admin, prevent access
         if (User::where('isadmin', 1)->exists()) {
             abort(403, 'Accès refusé');
         }
-
         return view('auth.register-admin');
     }
 

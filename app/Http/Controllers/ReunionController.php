@@ -32,8 +32,6 @@ class ReunionController extends Controller
     public function store(Request $request)
 {
     // Valider les données
-   
-
     $request->validate([
         'titre' => 'required|string|max:255',
         'date' => 'required|date',
@@ -44,7 +42,6 @@ class ReunionController extends Controller
         'lieu' => 'required|string|max:255',
     'create_by' => 'required|string|max:255',
     ]);
-
     // Créer la réunion
     $reunion = Reunion::create([
         'titre' => $request->titre,
@@ -55,14 +52,12 @@ class ReunionController extends Controller
         'lieu' => $request->lieu,
         'create_by' => $request->create_by, 
     ]);
-
     // Ajouter les participants
     foreach ($request->participants as $userId) {
         $reunion->participants()->create([
             'user_id' => $userId,
             'status' => 'attended',
         ]);
-
         // Créer une notification
         Notification::create([
             'user_id' => $userId,
@@ -71,23 +66,17 @@ class ReunionController extends Controller
             'lu' => 0,
         ]);
     }
-
     return redirect()->route('admin.reunions.index')->with('success', 'Réunion créée avec succès.');
 }
-
-
     // Afficher le formulaire d’édition
     public function edit(Reunion $reunion)
-    {
-        $users = User::all();
+    { $users = User::all();
         $salles = Salle::all();
         return view('admin.reunions.edit', compact('reunion', 'users', 'salles'));
     }
-
     // Mettre à jour une réunion
     public function update(Request $request, Reunion $reunion)
 {
-    
     // Valider les données
     $request->validate([
         'titre' => 'required|string|max:255',
@@ -99,7 +88,6 @@ class ReunionController extends Controller
          'lieu' => 'required|string|max:255',
     'create_by' => 'required|string|max:255',
     ]);
-
     // Mettre à jour les informations de la réunion
     $reunion->update([
         'titre' => $request->titre,
@@ -109,18 +97,15 @@ class ReunionController extends Controller
         'lieu' => $request->lieu,
         'create_by' => $request->create_by,
     ]);
-
     // Supprimer les anciens participants et notifications
     $reunion->participants()->delete();
     $reunion->notifications()->delete();
-
     // Réassocier les nouveaux participants et recréer les notifications
     foreach ($request->participants as $userId) {
         $reunion->participants()->create([
             'user_id' => $userId,
             'status' => 'attended',
         ]);
-
         Notification::create([
             'user_id' => $userId,
             'reunion_id' => $reunion->id,
@@ -128,32 +113,30 @@ class ReunionController extends Controller
             'lu' => 0,
         ]);
     }
-
     return redirect()->route('admin.reunions.index')->with('success', 'Réunion mise à jour avec succès.');
 }
-
     // Supprimer une réunion
    public function destroy(Reunion $reunion)
 {
     try {
-        // رسالة الإشعار قبل الحذف
+// Notification message before deletion
         $message = "L'événement '{$reunion->titre}' a été supprimé.";
 
-        // إرسال إشعار لكل مشارك
+// Send a notification to each participant
         foreach ($reunion->participants as $participant) {
     Notification::create([
         'user_id' => $participant->user_id,
-        // نحيدو الربط بـ reunion_id
+// Remove the link with reunion_id
         'message' => $message,
         'lu' => 0,
     ]);
 }
-        // حذف المشاركين فقط (مش الحذف كامل مع الإشعارات)
+// Delete only the participants (not the full deletion with notifications)
         $reunion->participants()->delete();
 
-        // **ما تمسحش الإشعارات** باش تبقى ظاهرة
+// **Do not delete the notifications** so they remain visible
 
-        // حذف الاجتماع نفسه
+// Delete the meeting itself
         $reunion->delete();
 
         return redirect()->route('admin.reunions.index')->with('success', 'Réunion supprimée avec succès.');
@@ -169,8 +152,9 @@ class ReunionController extends Controller
 
    private function sendNotifications(Reunion $reunion, string $message)
 {
-    // نجيب جميع المستخدمين المرتبطين بهاد الاجتماع
-    $users = $reunion->users; // العلاقة many-to-many
+    // Get all users linked to this meeting
+
+    $users = $reunion->users; // relation many-to-many
 
     foreach ($users as $user) {
         Notification::create([

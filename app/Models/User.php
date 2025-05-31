@@ -17,7 +17,7 @@ class User extends Authenticatable
      // Relations
     public function reunions()
 {
-    return $this->belongsToMany(Reunion::class, 'participants');
+    return $this->belyongsToMany(Reunion::class, 'participants');
 }
 
 
